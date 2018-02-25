@@ -1,0 +1,14 @@
+version: '3'
+services:
+  hass:
+    image: tonyapuzzo/rpi-home-assistant:latest
+    volumes:
+      - /home/pi/home-assistant/configuration:/config
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - outside
+
+networks:
+  outside:
+    external:
+      name: "host"
