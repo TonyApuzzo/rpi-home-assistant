@@ -1,7 +1,7 @@
 #!/bin/bash
 
 HA_LATEST=false
-DOCKER_IMAGE_NAME="lroguet/rpi-home-assistant"
+DOCKER_IMAGE_NAME="tonyapuzzo/rpi-home-assistant"
 RASPBIAN_RELEASE="stretch"
 
 log() {
@@ -40,7 +40,7 @@ fi
 ## #####################################################################
 cat << _EOF_ > Dockerfile
 FROM resin/rpi-raspbian:$RASPBIAN_RELEASE
-MAINTAINER Ludovic Roguet <code@fourteenislands.io>
+MAINTAINER Tony Apuzzo <tonyapuzzo@yahoo.com>
 
 # Base layer
 ENV ARCH=arm
