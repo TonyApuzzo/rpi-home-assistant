@@ -96,13 +96,21 @@ if [ "$HA_LATEST" = true ]; then
    log "Pushing $DOCKER_IMAGE_NAME:latest"
    docker push $DOCKER_IMAGE_NAME:latest
    echo $HA_VERSION > /var/log/home-assistant/docker-build.version
-   docker rmi -f $DOCKER_IMAGE_NAME:latest
+   #docker rmi -f $DOCKER_IMAGE_NAME:latest
 fi
 
-docker rmi -f $DOCKER_IMAGE_NAME:$HA_VERSION
+# Check for Beta version and tag if so
+if [[ "$HA_VERSION" =~ \.[0-9]+b[0-9]+$ ]]; then
+   log "Tagging $DOCKER_IMAGE_NAME:$HA_VERSION with beta"
+   docker tag $DOCKER_IMAGE_NAME:$HA_VERSION $DOCKER_IMAGE_NAME:beta
+   log "Pushing $DOCKER_IMAGE_NAME:beta"
+   docker push $DOCKER_IMAGE_NAME:beta
+fi
+
+#docker rmi -f $DOCKER_IMAGE_NAME:$HA_VERSION
 
 ## Clean-up Docker environment
-docker ps -aq --no-trunc | xargs docker rm
-docker images -q --filter dangling=true | xargs docker rmi
+#docker ps -aq --no-trunc | xargs docker rm
+#docker images -q --filter dangling=true | xargs docker rmi
 
 log ">>--------------------->>"
