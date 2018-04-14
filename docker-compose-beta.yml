@@ -9,8 +9,8 @@ services:
       - outside
     
   hass:
-    #image: tonyapuzzo/rpi-home-assistant:beta
-    image: tonyapuzzo/rpi-home-assistant:latest
+    image: tonyapuzzo/rpi-home-assistant:beta
+    #image: tonyapuzzo/rpi-home-assistant:latest
     volumes:
       - /home/pi/home-assistant/configuration:/config
       - /etc/localtime:/etc/localtime:ro
