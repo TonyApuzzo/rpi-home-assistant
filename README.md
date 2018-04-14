@@ -53,10 +53,30 @@ hass:
 
 `docker-compose run -d --service-ports hass`
 
-## Credits
-* lroguet for the original project that I forked
+### With Docker Swarm
+```yml
+version: '3'
+services:
+  hass:
+    #image: tonyapuzzo/rpi-home-assistant:beta
+    image: tonyapuzzo/rpi-home-assistant:latest
+    volumes:
+      - /home/pi/home-assistant/configuration:/config
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - outside
+
+networks:
+  outside:
+    external:
+      name: "host"
+```
 
 ## Links
 * [Home Assistant, Docker & a Raspberry Pi](https://fourteenislands.io/2016/07/home-assistant-docker-and-a-raspberry-pi/)
 * [Docker public repository](https://hub.docker.com/r/TonyApuzzo/rpi-home-assistant/)
 * [Home Assistant](https://home-assistant.io/)
+
+## Credits
+* lroguet for the original project that I forked: [Docker public repository](https://hub.docker.com/r/lroguet/rpi-home-assistant/)
+
