@@ -54,29 +54,39 @@ ENV CROSS_COMPILE=/usr/bin/
 # #11:	20170628 - Added libud3v-dev for https://home-assistant.io/components/zwave/
 # #14: 	20170802 - Added bluetooth and libbluetooth-dev for https://home-assistant.io/components/device_tracker.bluetooth_tracker/
 # #17:	20171203 - Added autoconf for https://home-assistant.io/components/tradfri/
-RUN apt-get update && \
-    apt-get install --no-install-recommends \
-      autoconf \
-      build-essential python3-dev python3-pip python3-setuptools \
-      libcups2-dev \
-      libffi-dev libpython-dev libssl-dev \
-      libudev-dev \
-      bluetooth libbluetooth-dev \
-      net-tools nmap \
-      iputils-ping \
-      ssh && \
-    apt-get clean && \
+RUN apt-get update && \\
+    apt-get install --no-install-recommends \\
+      autoconf \\
+      bluetooth \\
+      build-essential \\
+      iputils-ping \\
+      libbluetooth-dev \\
+      libcups2-dev \\
+      libffi-dev \\
+      libpython3-dev \\
+      libssl-dev \\
+      libudev-dev \\
+      net-tools \\
+      nmap \\
+      postgresql-server-dev-all \\
+      python3-dev \\
+      python3-pip \\
+      python3-setuptools \\
+      ssh && \\
+    apt-get clean && \\
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Mouting point for the user's configuration
+# Mount point for the user's configuration
 VOLUME /config
+
+# Install Home Assistant
+RUN pip3 install wheel
+RUN pip3 install psycopg2
+RUN pip3 install homeassistant==$HA_VERSION
 
 # Start Home Assistant
 CMD [ "python3", "-m", "homeassistant", "--config", "/config" ]
 
-# Install Home Assistant
-RUN pip3 install wheel
-RUN pip3 install homeassistant==$HA_VERSION
 _EOF_
 
 ## #####################################################################
@@ -106,11 +116,5 @@ if [[ "$HA_VERSION" =~ \.[0-9]+b[0-9]+$ ]]; then
    log "Pushing $DOCKER_IMAGE_NAME:beta"
    docker push $DOCKER_IMAGE_NAME:beta
 fi
-
-#docker rmi -f $DOCKER_IMAGE_NAME:$HA_VERSION
-
-## Clean-up Docker environment
-#docker ps -aq --no-trunc | xargs docker rm
-#docker images -q --filter dangling=true | xargs docker rmi
 
 log ">>--------------------->>"

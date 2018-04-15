@@ -8,6 +8,16 @@ services:
     networks:
       - outside
     
+  db:
+    image: postgres:10-alpine
+    volumes:
+      - /home/pi/home-assistant/postgresql/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - outside
+
   hass:
     #image: tonyapuzzo/rpi-home-assistant:beta
     image: tonyapuzzo/rpi-home-assistant:latest
